@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialSpark: </title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+:root {
+    /* Color Palette (Light Mode Defaults) */
+    --primary-color: #4f46e5;       /* Indigo-600 */
+    --primary-hover: #4338ca;       /* Indigo-700 */
+    --text-color: #1f2937;          /* Gray-800 */
+    --background-color: #f9fafb;    /* Gray-50 - Main background */
+    --card-background: #ffffff;     /* White - Card/Element background */
+    --border-color: #e5e7eb;        /* Gray-200 - Borders/Separators */
+    --input-background: #ffffff;    /* Input background in light mode */
+    --accent-color: #facc15;        /* Yellow-400 */
+}
+
+.dark {
+    /* Dark Theme Overrides */
+    --text-color: #f9fafb;          /* Gray-50 */
+    --background-color: #111827;    /* Gray-900 - Dark background */
+    --card-background: #1f2937;     /* Gray-800 - Dark card background */
+    --border-color: #374151;        /* Gray-700 - Dark borders */
+    --input-background: #374151;    /* Dark input background */
+    --accent-color: #facc15;
+}
+
+/* --- Base & Layout --- */
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* --- Header --- */
+
+.header {
+    background-color: var(--card-background);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background-color: var(--background-color);
+    border-radius: 9999px;
+    border: 1px solid var(--border-color);
+}
+
+.user-badge img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+/* --- Buttons --- */
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--border-color);
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+
+.icon-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.icon-btn:hover {
+    background-color: var(--border-color);
+}
+
+/* Small button variant */
+.btn-sm {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+}
+.btn-save { background-color: var(--primary-color); color: white; }
+.btn-cancel { background-color: #e5e7eb; color: #374151; }
+.dark .btn-cancel { background-color: #374151; color: #d1d5db; }
+.btn-post {
+    background-color: var(--primary-color);
+    color: white;
+    white-space: nowrap;
+}
+
+/* --- Posts and Cards --- */
+
+.post-card, .create-post, .auth-card {
+    background-color: var(--card-background);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    position: relative; 
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.post-author img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post-author h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.post-author p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.dark .post-author p {
+    color: #9ca3af;
+}
+
+.edited-tag {
+    font-size: 0.7rem;
+    font-style: italic;
+    color: var(--primary-color);
+    margin-left: 0.3rem;
+}
+
+.post-content {
+    margin-bottom: 1rem;
+    white-space: pre-wrap;
+}
+
+.post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.post-footer {
+    display: flex;
+    gap: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.75rem;
+}
+
+.post-action {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.dark .post-action {
+    color: #9ca3af;
+}
+
+.post-action svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.2s;
+}
+
+.post-action:hover {
+    color: var(--primary-color);
+}
+
+.post-action.liked, .post-action.liked svg {
+    color: #ef4444; 
+    fill: #ef4444;
+}
+
+.comment-btn.active {
+    color: var(--primary-color);
+}
+
+/* --- Dropdown Menu & Actions (Corrected Styling for Edit/Delete) --- */
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+    padding: 0.5rem 0;
+    min-width: 120px;
+}
+
+.dropdown-menu button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.15s, color 0.15s; /* Added transition */
+}
+
+.dropdown-menu button:hover {
+    background-color: var(--background-color);
+}
+
+.dropdown-menu button.delete {
+    color: #ef4444; /* Red for Delete */
+}
+
+.dropdown-menu button.delete:hover {
+    background-color: #fee2e2; /* Light Red hover background */
+}
+
+.dark .dropdown-menu button.delete:hover {
+    background-color: #4a0404; /* Dark Red hover background for dark mode */
+}
+/* Note: Edit button (if not .delete) uses the default .dropdown-menu button styling */
+
+/* --- Post Editing --- */
+
+.post-content.editing textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-background);
+    color: var(--text-color);
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    justify-content: flex-end;
+}
+
+/* --- Create Post --- */
+
+.create-post h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.create-post textarea, .create-post input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-background);
+    color: var(--text-color);
+    box-sizing: border-box;
+    margin-bottom: 0.75rem;
+    resize: none;
+}
+
+.create-post-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.create-post-actions input {
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+
+/* --- Feed Controls (Search/Filter/Sort) --- */
+
+.feed-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 0;
+}
+
+.search-wrapper, .filter-wrapper {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background-color: var(--card-background);
+    padding: 0 0.75rem;
+    position: relative; /* Added for the Sort/Filter dropdown to position correctly */
+}
+
+.search-wrapper input, .filter-wrapper select {
+    border: none;
+    background: none;
+    padding: 0.5rem 0;
+    color: var(--text-color);
+    width: 100%;
+    outline: none;
+}
+
+.search-icon, .filter-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+    color: #6b7280;
+}
+
+/* --- Authentication (Auth) --- */
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 80vh;
+    padding-top: 4rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-card h2 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.auth-card p {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+.tab-buttons {
+    display: flex;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.tab-button {
+    flex-grow: 1;
+    padding: 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+    border: none;
+    background: none;
+    color: #6b7280;
+    transition: color 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.dark .tab-button {
+    color: #9ca3af;
+}
+
+.tab-button.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-background);
+    color: var(--text-color);
+    box-sizing: border-box;
+}
+
+.auth-card button {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.error-message {
+    color: #ef4444;
+    background-color: #fee2e2;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: left;
+    font-size: 0.9rem;
+    border: 1px solid #fca5a5;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+/* --- Comments Section --- */
+
+.comments-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.comments-summary {
+    font-size: 0.85rem;
+    color: #6b7280;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+}
+
+.comments-summary:hover {
+    text-decoration: underline;
+}
+
+.comments-title {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.comments-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 0.5rem; 
+}
+
+.comment-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.comment-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.comment-body {
+    background-color: var(--background-color);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.comment-author {
+    font-weight: 700;
+    margin-right: 0.4rem;
+    color: var(--primary-color);
+}
+
+.comment-content {
+    font-weight: 400;
+    display: block;
+}
+
+.comment-time {
+    display: block;
+    font-size: 0.7rem;
+    color: #9ca3af;
+    margin-top: 0.2rem;
+}
+
+.no-comments, .login-prompt {
+    font-size: 0.9rem;
+    color: #6b7280;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.comment-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.comment-form input {
+    flex-grow: 1;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-background);
+    color: var(--text-color);
+    outline: none;
+}
+    </style>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+
+    <script>
+        
+        const STORAGE_KEY_USER = 'socialspark_user';
+        const STORAGE_KEY_USERS = 'socialspark_users'; 
+        const STORAGE_KEY_POSTS = 'socialspark_posts';
+        const STORAGE_KEY_THEME = 'socialspark_theme';
+        const STORAGE_KEY_COMMENTS = 'socialspark_comments';
+
+        const DEFAULT_USER = {
+            id: 'demo',
+            name: 'Demo User',
+            email: 'demo@socialspark.com',
+
+            password: 'password123', 
+            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=demo'
+        };
+        
+        const SECOND_USER = {
+            id: 'john', 
+            name: 'John Doe',
+            email: 'john@example.com',
+            password: 'password123', 
+            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=john'
+        };
+
+        const INITIAL_USERS = [DEFAULT_USER, SECOND_USER];
+        const INITIAL_POSTS = [
+            {
+                id: '1',
+                userId: DEFAULT_USER.id,
+                authorName: DEFAULT_USER.name,
+                authorAvatar: DEFAULT_USER.avatar,
+                content: 'Just finished my first coding project! 🚀 #coding #webdev - This is a default post by the demo user. Log in with "demo@socialspark.com" and "password123" to try it!',
+                likes: [DEFAULT_USER.id, SECOND_USER.id],
+                timestamp: Date.now() - 10000000,
+                imageUrl: 'https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800'
+            },
+            {
+                id: '2',
+                userId: SECOND_USER.id,
+                authorName: SECOND_USER.name,
+                authorAvatar: SECOND_USER.avatar,
+                content: 'Does anyone know a good React tutorial? 🤔 Seeking recommendations!',
+                likes: [DEFAULT_USER.id],
+                timestamp: Date.now() - 5000000
+            }
+        ];
+
+        let commentsData = {
+            '1': [
+                { id: 'c1', postId: '1', userId: 'test', authorName: 'Test Account', authorAvatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=test', content: 'Great job!', timestamp: Date.now() - 9000000 },
+                { id: 'c2', postId: '1', userId: DEFAULT_USER.id, authorName: DEFAULT_USER.name, authorAvatar: DEFAULT_USER.avatar, content: 'Thanks! It was a fun challenge.', timestamp: Date.now() - 8000000 },
+            ]
+        };
+        let registeredUsers = []; 
+        let currentUser = null; 
+        let posts = []; 
+        let darkMode = false; 
+        let searchQuery = ''; 
+        let sortBy = 'LATEST'; 
+        let editingPostId = null; 
+        let showCommentsForPostId = null; 
+        let currentAuthView = 'login'; 
+        let authError = ''; 
+    
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+
+        function saveUsers() {
+            localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(registeredUsers));
+        }
+
+        function savePosts() {
+            localStorage.setItem(STORAGE_KEY_POSTS, JSON.stringify(posts));
+        }
+
+        function saveComments() {
+            localStorage.setItem(STORAGE_KEY_COMMENTS, JSON.stringify(commentsData));
+        }
+
+        function saveUser() {
+            if (currentUser) {
+                localStorage.setItem(STORAGE_KEY_USER, JSON.stringify({
+                    id: currentUser.id,
+                    name: currentUser.name,
+                    email: currentUser.email,
+                    avatar: currentUser.avatar
+                }));
+            } else {
+                localStorage.removeItem(STORAGE_KEY_USER);
+            }
+        }
+
+        function saveTheme() {
+            localStorage.setItem(STORAGE_KEY_THEME, darkMode ? 'dark' : 'light');
+        }
+
+        function initApp() {
+            
+            const storedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+                darkMode = true;
+                document.body.classList.add('dark');
+            }
+
+        
+            const storedUsers = localStorage.getItem(STORAGE_KEY_USERS);
+            if (storedUsers) {
+                registeredUsers = JSON.parse(storedUsers);
+            } else {
+                registeredUsers = INITIAL_USERS;
+                saveUsers();
+            }
+            const storedUser = localStorage.getItem(STORAGE_KEY_USER);
+            if (storedUser) {
+                const loggedInUser = JSON.parse(storedUser);
+                currentUser = registeredUsers.find(u => u.id === loggedInUser.id) || null;
+                if (!currentUser) saveUser(); 
+            }
+            const storedPosts = localStorage.getItem(STORAGE_KEY_POSTS);
+            if (storedPosts) {
+                posts = JSON.parse(storedPosts);
+            } else {
+                posts = INITIAL_POSTS;
+                savePosts();
+            }
+            const storedComments = localStorage.getItem(STORAGE_KEY_COMMENTS);
+            if (storedComments) {
+                commentsData = JSON.parse(storedComments);
+            } else {
+                saveComments();
+            }
+
+            render(); 
+        }
+
+        function setAuthView(view) {
+            currentAuthView = view;
+            authError = ''; 
+            render();
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            const form = e.target;
+            const name = form.querySelector('#signup-name').value.trim();
+            const email = form.querySelector('#signup-email').value.trim();
+            const password = form.querySelector('#signup-password').value.trim();
+            authError = '';
+
+            if (name && email && password) {
+                const existingUser = registeredUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+                if (existingUser) {
+                    authError = 'Error: This email is already registered. Please login instead.';
+                } else {
+                    const newUser = {
+                        id: generateId(),
+                        name: name,
+                        email: email,
+                        password: password, 
+                        
+                        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`
+                    };
+
+                    registeredUsers.push(newUser);
+                    saveUsers();
+                
+                    currentUser = newUser;
+                    saveUser();
+                    authError = '';
+                }
+            } else {
+                authError = 'Error: Please fill in all fields.';
+            }
+            render();
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const form = e.target;
+            const email = form.querySelector('#login-email').value.trim();
+            const password = form.querySelector('#login-password').value.trim();
+            authError = '';
+
+            if (email && password) {
+                const user = registeredUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+                if (user && user.password === password) {
+                    currentUser = user;
+                    saveUser();
+                    authError = ''; 
+                } else {
+                    authError = 'Error: Invalid email or password.';
+                }
+            } else {
+                authError = 'Error: Please enter both email and password.';
+            }
+            render();
+        }
+
+        
+        function handleLogout() {
+            currentUser = null;
+            saveUser();
+            authError = ''; 
+            setAuthView('login'); 
+            render();
+        }
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            if (darkMode) {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+            saveTheme();
+        }
+        
+        function handleCreatePost(e) {
+            e.preventDefault();
+            const content = document.getElementById('post-content').value.trim();
+            const imageUrl = document.getElementById('post-image').value.trim();
+
+            if (content && currentUser) {
+                const newPost = {
+                    id: generateId(),
+                    userId: currentUser.id,
+                    authorName: currentUser.name,
+                    authorAvatar: currentUser.avatar,
+                    content: content,
+                    imageUrl: imageUrl || undefined,
+                    likes: [],
+                    timestamp: Date.now()
+                };
+
+                posts.unshift(newPost);
+                savePosts();
+                document.getElementById('post-content').value = '';
+                document.getElementById('post-image').value = '';
+                render();
+            }
+        }
+
+        function handleLikePost(postId) {
+            if (!currentUser) return;
+
+            posts = posts.map(post => {
+                if (post.id === postId) {
+                    const isLiked = post.likes.includes(currentUser.id);
+                    return {
+                        ...post,
+                        likes: isLiked
+                            ? post.likes.filter(id => id !== currentUser.id)
+                            : [...post.likes, currentUser.id]
+                    };
+                }
+                return post;
+            });
+
+            savePosts();
+            render();
+        }
+
+        function handleDeletePost(postId) {
+            
+            if (!confirm("Are you sure you want to delete this post?")) return;
+
+            posts = posts.filter(p => p.id !== postId);
+            delete commentsData[postId];
+            savePosts();
+            saveComments();
+            render();
+        }
+
+        function startEditPost(postId) {
+            editingPostId = postId;
+            render();
+        }
+
+        function cancelEditPost() {
+            editingPostId = null;
+            render();
+        }
+
+        function saveEditPost(postId) {
+            const textarea = document.querySelector(`#edit-content-${postId}`);
+            const newContent = textarea.value.trim();
+
+            if (newContent) {
+                posts = posts.map(post =>
+                    post.id === postId ? { ...post, content: newContent, edited: true } : post
+                );
+                savePosts();
+                editingPostId = null;
+                render();
+            }
+        }
+        
+        function toggleComments(postId) {
+            showCommentsForPostId = showCommentsForPostId === postId ? null : postId;
+            render();
+        }
+
+        function handleAddComment(e, postId) {
+            e.preventDefault();
+            const input = document.querySelector(`#comment-input-${postId}`);
+            const content = input.value.trim();
+
+            if (content && currentUser) {
+                const newComment = {
+                    id: generateId(),
+                    postId: postId,
+                    userId: currentUser.id,
+                    authorName: currentUser.name,
+                    authorAvatar: currentUser.avatar,
+                    content: content,
+                    timestamp: Date.now()
+                };
+
+                if (!commentsData[postId]) {
+                    commentsData[postId] = [];
+                }
+
+                commentsData[postId].push(newComment);
+                saveComments();
+                input.value = '';
+                render();
+            }
+        }
+
+
+        function handleSearch(e) {
+            searchQuery = e.target.value;
+            render();
+        }
+
+        function handleSort(e) {
+            sortBy = e.target.value;
+            render();
+        }
+
+    
+
+        function getProcessedPosts() {
+            let filtered = posts.filter(post =>
+                post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                post.authorName.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+
+            return filtered.sort((a, b) => {
+                switch (sortBy) {
+                    case 'LATEST':
+                        return b.timestamp - a.timestamp;
+                    case 'OLDEST':
+                        return a.timestamp - b.timestamp;
+                    case 'MOST_LIKED':
+                        return b.likes.length - a.likes.length;
+                    default:
+                        return 0;
+                }
+            });
+        }
+
+        function formatTime(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (days > 0) return `${days}d ago`;
+            if (hours > 0) return `${hours}h ago`;
+            if (minutes > 0) return `${minutes}m ago`;
+            return 'Just now';
+        }
+
+        function toggleMenu(postId) {
+            const menu = document.getElementById(`menu-${postId}`);
+            const allMenus = document.querySelectorAll('.dropdown-menu');
+
+            allMenus.forEach(m => {
+                if (m.id !== `menu-${postId}`) {
+                    m.classList.add('hidden');
+                }
+            });
+
+            menu.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.post-actions-menu')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.add('hidden');
+                });
+            }
+        });
+
+        function renderComments(postId) {
+            const postComments = commentsData[postId] || [];
+            const isExpanded = showCommentsForPostId === postId;
+
+            if (!isExpanded) {
+                return `
+                    <div class="comments-summary" onclick="window.toggleComments('${postId}')">
+                        View all ${postComments.length} comments
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="comments-section">
+                    <h4 class="comments-title">Comments (${postComments.length})</h4>
+                    <div class="comments-list">
+                        ${postComments.length > 0
+                            ? postComments.map(comment => `
+                                <div class="comment-item">
+                                    <img src="${comment.authorAvatar}" alt="${comment.authorName}" class="comment-avatar">
+                                    <div class="comment-body">
+                                        <span class="comment-author">${comment.authorName}</span>
+                                        <span class="comment-content">${comment.content}</span>
+                                        <span class="comment-time">${formatTime(comment.timestamp)}</span>
+                                    </div>
+                                </div>
+                            `).join('')
+                            : '<p class="no-comments">No comments yet. Be the first!</p>'
+                        }
+                    </div>
+                    
+                    ${currentUser ? `
+                        <form class="comment-form" onsubmit="window.handleAddComment(event, '${postId}')">
+                            <input 
+                                type="text" 
+                                id="comment-input-${postId}"
+                                placeholder="Write a comment..." 
+                                required
+                            >
+                            <button type="submit" class="btn btn-sm btn-post">Send</button>
+                        </form>
+                    ` : '<p class="login-prompt">Please log in to leave a comment.</p>'}
+                    
+                    <button class="btn btn-sm btn-cancel" onclick="window.toggleComments('${postId}')">Hide Comments</button>
+                </div>
+            `;
+        }
+
+        function renderAuth() {
+            const loginForm = `
+                <form onsubmit="window.handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="your@email.com" required value="demo@socialspark.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="********" required value="password123">
+                    </div>
+                    <button type="submit" class="btn-primary">Log In</button>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: #6b7280;">Demo: demo@socialspark.com / password123</p>
+                </form>
+            `;
+
+            const signupForm = `
+                <form onsubmit="window.handleSignup(event)">
+                    <div class="form-group">
+                        <label for="signup-name">Your Name</label>
+                        <input type="text" id="signup-name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password (Demo Only)</label>
+                        <input type="password" id="signup-password" placeholder="Choose a password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Sign Up & Get Started</button>
+                </form>
+            `;
+
+            return `
+                <div class="auth-container">
+                    <div class="auth-card">
+                        <h2>Welcome to SocialSpark ✨</h2>
+                        <p>Join the conversation and share your thoughts</p>
+                        
+                        ${authError ? `<div class="error-message show">${authError}</div>` : `<div class="error-message"></div>`}
+
+                        <div class="tab-buttons">
+                            <button 
+                                class="tab-button ${currentAuthView === 'login' ? 'active' : ''}" 
+                                onclick="window.setAuthView('login')"
+                            >
+                                Log In
+                            </button>
+                            <button 
+                                class="tab-button ${currentAuthView === 'signup' ? 'active' : ''}" 
+                                onclick="window.setAuthView('signup')"
+                            >
+                                Sign Up
+                            </button>
+                        </div>
+                        
+                        ${currentAuthView === 'login' ? loginForm : signupForm}
+
+                    </div>
+                </div>
+            `;
+        }
+        function renderHeader() {
+
+            const sunIcon = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+            const moonIcon = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+            const logoutIcon = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>`;
+
+
+            return `
+                <header class="header">
+                    <div class="header-content">
+                        <h1>SocialSpark 💬</h1>
+                        <div class="header-actions">
+                            <button class="icon-btn" onclick="window.toggleDarkMode()" title="Toggle Dark/Light Mode">
+                                ${darkMode ? sunIcon : moonIcon}
+                            </button>
+                            <div class="user-badge" title="${currentUser.email}">
+                                <img src="${currentUser.avatar}" alt="${currentUser.name} avatar">
+                                <span>${currentUser.name.split(' ')[0]}</span>
+                            </div>
+                            <button class="icon-btn logout" onclick="window.handleLogout()" title="Logout">
+                                ${logoutIcon}
+                            </button>
+                        </div>
+                    </div>
+                </header>
+            `;
+        }
+
+         
+        function renderCreatePost() {
+            return `
+                <div class="create-post">
+                    <h3>Share Your Spark 💡</h3>
+                    <form onsubmit="window.handleCreatePost(event)">
+                        <textarea
+                            id="post-content"
+                            placeholder="What's on your mind, ${currentUser.name.split(' ')[0]}? Share your latest projects or thoughts..."
+                            rows="4"
+                            required
+                        ></textarea>
+                        <div class="create-post-actions">
+                            <input type="url" id="post-image" placeholder="Image URL (optional) - e.g. for a project screenshot">
+                            <button type="submit" class="btn btn-post">Post Spark</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+        }
+
+         
+        function renderFeedControls() {
+        
+            const searchIcon = `<svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>`;
+            const filterIcon = `<svg class="filter-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>`;
+
+
+            return `
+                <div class="feed-controls">
+                    <div class="search-wrapper">
+                        ${searchIcon}
+                        <input
+                            type="text"
+                            placeholder="Search posts or authors..."
+                            value="${searchQuery}"
+                            oninput="window.handleSearch(event)"
+                        >
+                    </div>
+                    <div class="filter-wrapper">
+                        ${filterIcon}
+                        <select onchange="window.handleSort(event)" aria-label="Sort Posts By">
+                            <option value="LATEST" ${sortBy === 'LATEST' ? 'selected' : ''}>Latest First 🗓️</option>
+                            <option value="OLDEST" ${sortBy === 'OLDEST' ? 'selected' : ''}>Oldest First</option>
+                            <option value="MOST_LIKED" ${sortBy === 'MOST_LIKED' ? 'selected' : ''}>Most Liked 👍</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPost(post) {
+            const isLiked = currentUser && post.likes.includes(currentUser.id);
+            const isAuthor = currentUser && post.userId === currentUser.id;
+            const isEditing = editingPostId === post.id;
+            const commentCount = commentsData[post.id] ? commentsData[post.id].length : 0;
+            const isCommentsExpanded = showCommentsForPostId === post.id;
+            const menuIcon = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>`;
+            const editIcon = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>`;
+            const deleteIcon = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>`;
+            const heartFilled = `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+            const heartOutline = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>`;
+            const commentIcon = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.111A9 9 0 0112 3c4.97 0 9 3.582 9 8z"></path></svg>`;
+
+
+            return `
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <img src="${post.authorAvatar}" alt="${post.authorName} avatar">
+                            <div class="post-author-info">
+                                <h3>${post.authorName}</h3>
+                                <p>
+                                    ${formatTime(post.timestamp)}
+                                    ${post.edited ? '<span class="edited-tag">(Edited)</span>' : ''}
+                                </p>
+                            </div>
+                        </div>
+                        ${isAuthor ? `
+                            <div class="post-actions-menu">
+                                <button class="menu-btn" onclick="window.toggleMenu('${post.id}')" title="More Actions">
+                                    ${menuIcon}
+                                </button>
+                                <div id="menu-${post.id}" class="dropdown-menu hidden">
+                                    <button onclick="window.startEditPost('${post.id}')">
+                                        ${editIcon}
+                                        Edit Post
+                                    </button>
+                                    <button class="delete" onclick="window.handleDeletePost('${post.id}')">
+                                        ${deleteIcon}
+                                        Delete Post
+                                    </button>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    ${isEditing ? `
+                        <div class="post-content editing">
+                            <textarea id="edit-content-${post.id}" rows="4">${post.content}</textarea>
+                            <div class="edit-actions">
+                                <button class="btn btn-save" onclick="window.saveEditPost('${post.id}')">Save Changes</button>
+                                <button class="btn btn-cancel" onclick="window.cancelEditPost()">Cancel</button>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="post-content">${post.content}</div>
+                    `}
+
+                    ${post.imageUrl ? `<img src="${post.imageUrl}" alt="Post image" class="post-image">` : ''}
+
+                    <div class="post-footer">
+                        <button class="post-action ${isLiked ? 'liked' : ''}" onclick="window.handleLikePost('${post.id}')" title="${isLiked ? 'Unlike' : 'Like'} Post">
+                            ${isLiked ? heartFilled : heartOutline}
+                            <span class="like-count">${post.likes.length > 0 ? post.likes.length : ''}</span>
+                        </button>
+                           <button class="post-action comment-btn ${isCommentsExpanded ? 'active' : ''}" onclick="window.toggleComments('${post.id}')" title="View/Hide Comments">
+                            ${commentIcon}
+                            <span class="comment-count">${commentCount > 0 ? commentCount : ''}</span>
+                        </button>
+                    </div>
+                    
+                    ${renderComments(post.id)}
+                    
+                </div>
+            `;
+        }
+
+        
+        function renderMain() {
+            const processedPosts = getProcessedPosts();
+
+            return `
+                ${renderHeader()}
+                <main class="main-content">
+                    ${renderCreatePost()}
+                    ${renderFeedControls()}
+                    <div class="posts-feed">
+                        ${processedPosts.length > 0
+                            ? processedPosts.map(post => renderPost(post)).join('')
+                            : `
+                                <div class="empty-state post-card">
+                                    <p>No posts found matching your criteria. Why not start the conversation?</p>
+                                </div>
+                            `
+                        }
+                    </div>
+                </main>
+            `;
+        }
+
+        
+        function render() {
+            const app = document.getElementById('app');
+
+            if (!app) {
+                console.error("Element with id 'app' not found.");
+                return;
+            }
+
+            if (!currentUser) {
+                app.innerHTML = renderAuth(); 
+            } else {
+                app.innerHTML = renderMain(); 
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', initApp);
+        window.setAuthView = setAuthView;
+        window.handleLogin = handleLogin;
+        window.handleSignup = handleSignup;
+        window.handleLogout = handleLogout;
+        window.toggleDarkMode = toggleDarkMode;
+        window.handleCreatePost = handleCreatePost;
+        window.handleLikePost = handleLikePost;
+        window.handleDeletePost = handleDeletePost;
+        window.startEditPost = startEditPost;
+        window.cancelEditPost = cancelEditPost;
+        window.saveEditPost = saveEditPost;
+        window.handleSearch = handleSearch;
+        window.handleSort = handleSort;
+        window.toggleMenu = toggleMenu;
+        window.toggleComments = toggleComments;
+        window.handleAddComment = handleAddComment;
+
+    </script>
+</body>
+</html>
+
